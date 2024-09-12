@@ -8,6 +8,8 @@ using NZWalks.API.Repositories;
 
 namespace NZWalks.API.Controllers
 {
+    // I love coding
+
     // /api/walks
     [Route("api/[controller]")]
     [ApiController]
