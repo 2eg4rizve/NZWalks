@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NZWalks.API.Data;
 using NZWalks.API.Models.Domain;
+using NZWalks.API.Repositories.Interface;
 
-namespace NZWalks.API.Repositories
+namespace NZWalks.API.Repositories.Repository
 {
     public class SQLRegionRepository : IRegionRepository
     {
@@ -16,10 +17,10 @@ namespace NZWalks.API.Repositories
 
 
 
-       
+
         public async Task<List<Region>> GetAllAsync()
         {
-           return await dbContext.Regions.ToListAsync();
+            return await dbContext.Regions.ToListAsync();
         }
 
 
@@ -42,7 +43,7 @@ namespace NZWalks.API.Repositories
             await dbContext.SaveChangesAsync();
 
             return region;
-            
+
         }
 
 

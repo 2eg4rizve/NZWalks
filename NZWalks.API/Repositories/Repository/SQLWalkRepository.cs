@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NZWalks.API.Data;
 using NZWalks.API.Models.Domain;
+using NZWalks.API.Repositories.Interface;
 
-namespace NZWalks.API.Repositories
+namespace NZWalks.API.Repositories.Repository
 {
     public class SQLWalkRepository : IWalkRepository
     {
@@ -16,9 +17,16 @@ namespace NZWalks.API.Repositories
 
         public async Task<Walk> CreateAsync(Walk walk)
         {
-            await dbContext.Walks.AddAsync(walk);
-            await dbContext.SaveChangesAsync();
-            return walk;
+            try
+            {
+                await dbContext.Walks.AddAsync(walk);
+                await dbContext.SaveChangesAsync();
+                return walk;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
 
@@ -29,7 +37,7 @@ namespace NZWalks.API.Repositories
         //}
 
         public async Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null,
-            string? sortBy = null , bool isAscending = true, int pageNumber = 1, int pageSize = 1000)
+            string? sortBy = null, bool isAscending = true, int pageNumber = 1, int pageSize = 1000)
         {
             var walks = dbContext.Walks.Include("Difficulty").Include("Region").AsQueryable();
 
@@ -72,7 +80,7 @@ namespace NZWalks.API.Repositories
                 .Include("Region")
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            
+
         }
 
         public async Task<Walk?> UpdateAsync(Guid id, Walk walk)
@@ -96,7 +104,7 @@ namespace NZWalks.API.Repositories
 
             return existingWalk;
 
-        }  
+        }
 
         public async Task<Walk?> DeleteAsync(Guid id)
         {
@@ -112,6 +120,16 @@ namespace NZWalks.API.Repositories
             await dbContext.SaveChangesAsync();
             return existingWalk;
 
+        }
+
+        public async Task<bool> IsNameExist(string name)
+        {
+            var walks = dbContext.Walks.Where(x=> x.Name == name).ToList();
+            if (walks.Any())
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

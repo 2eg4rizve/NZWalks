@@ -2,13 +2,16 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.CustomActionFilters;
+using NZWalks.API.Entities.RequestEntity;
+using NZWalks.API.Managers.Interface;
 using NZWalks.API.Models.Domain;
 using NZWalks.API.Models.DTO;
 using NZWalks.API.Repositories;
+using NZWalks.API.Repositories.Interface;
 
 namespace NZWalks.API.Controllers
 {
- 
+
 
     // /api/walks
     [Route("api/[controller]")]
@@ -17,31 +20,47 @@ namespace NZWalks.API.Controllers
     {
         private readonly IMapper mapper;
         private readonly IWalkRepository walkRepository;
+        private readonly IWalksManager _walksManager;
+        private object addWalkRequestDto;
 
-        public WalksController(IMapper mapper, IWalkRepository walkRepository)
+        public WalksController(IMapper mapper, IWalkRepository walkRepository, IWalksManager walksManager)
         {
             this.mapper = mapper;
             this.walkRepository = walkRepository;
+            _walksManager = walksManager;
         }
 
 
         // CREATE Walk
         // POST: /api/walks
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AddWalkRequestDto addWalkRequestDto)
+        public async Task<IActionResult> Create(WalksRequestAddRequestEntity walksRequestAddRequestEntity)
         {
-            if (ModelState.IsValid)
-            {
-                // Map DTO to Domain Model
-                var walkDomainModel = mapper.Map<Walk>(addWalkRequestDto);
+            // request entity logger
+            // call manager
+           // var res = await _walksManager.AddWalks(walksRequestAddRequestEntity);
+            // logginh
+            //return Ok(res);
+            //if (ModelState.IsValid)
+            //{
+            // Map DTO to Domain Model
+            //var walkDomainModel = mapper.Map<Walk>(addWalkRequestDto);
 
-                await walkRepository.CreateAsync(walkDomainModel);
+            //await walkRepository.CreateAsync(walkDomainModel);
 
-                // Map Domain model to DTO
-                return Ok(mapper.Map<WalkDto>(walkDomainModel));
-            }
+            //// Map Domain model to DTO
+            //return Ok(mapper.Map<WalkDto>(walkDomainModel));
+            //}
 
-            return BadRequest(ModelState);
+
+            // Map DTO to Domain Model
+            var walkDomainModel = mapper.Map<Walk>(addWalkRequestDto);
+
+            await walkRepository.CreateAsync(walkDomainModel);
+
+            return Ok(mapper.Map<WalkDto>(walkDomainModel));
+
+            // Map Domain model to DTO
 
         }
 
