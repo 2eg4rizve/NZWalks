@@ -15,18 +15,25 @@ namespace NZWalks.API.Repositories.Repository
         }
 
 
+        //public async Task<Walk> CreateAsync(Walk walk)
+        //{
+        //    try
+        //    {
+        //        await dbContext.Walks.AddAsync(walk);
+        //        await dbContext.SaveChangesAsync();
+        //        return walk;
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+
         public async Task<Walk> CreateAsync(Walk walk)
         {
-            try
-            {
-                await dbContext.Walks.AddAsync(walk);
-                await dbContext.SaveChangesAsync();
-                return walk;
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
+            await dbContext.Walks.AddAsync(walk);
+            await dbContext.SaveChangesAsync();
+            return walk;
         }
 
 
@@ -122,14 +129,14 @@ namespace NZWalks.API.Repositories.Repository
 
         }
 
-        public async Task<bool> IsNameExist(string name)
-        {
-            var walks = dbContext.Walks.Where(x=> x.Name == name).ToList();
-            if (walks.Any())
-            {
-                return true;
-            }
-            return false;
-        }
+        //public async Task<bool> IsNameExist(string name)
+        //{
+        //    var walks = dbContext.Walks.Where(x=> x.Name == name).ToList();
+        //    if (walks.Any())
+        //    {
+        //        return true;
+        //    }
+        //    return false;
+        //}
     }
 }

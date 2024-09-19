@@ -16,52 +16,74 @@ namespace NZWalks.API.Controllers
     // /api/walks
     [Route("api/[controller]")]
     [ApiController]
+   
     public class WalksController : ControllerBase
     {
         private readonly IMapper mapper;
         private readonly IWalkRepository walkRepository;
-        private readonly IWalksManager _walksManager;
-        private object addWalkRequestDto;
+      
 
-        public WalksController(IMapper mapper, IWalkRepository walkRepository, IWalksManager walksManager)
+        //public WalksController(IMapper mapper, IWalkRepository walkRepository, IWalksManager walksManager)
+        //{
+        //    this.mapper = mapper;
+        //    this.walkRepository = walkRepository;
+        //    _walksManager = walksManager;
+        //}
+
+        public WalksController(IMapper mapper, IWalkRepository walkRepository)
         {
             this.mapper = mapper;
             this.walkRepository = walkRepository;
-            _walksManager = walksManager;
+            
         }
 
 
         // CREATE Walk
+        //// POST: /api/walks
+        //[HttpPost]
+        //[ValidateModel]
+        //public async Task<IActionResult> Create([FromBody] AddWalkRequestDto addWalkRequestDto)
+        //{
+        //    // request entity logger
+        //    // call manager
+        //   // var res = await _walksManager.AddWalks(walksRequestAddRequestEntity);
+        //    // logginh
+        //    //return Ok(res);
+        //    //if (ModelState.IsValid)
+        //    //{
+        //    // Map DTO to Domain Model
+        //    //var walkDomainModel = mapper.Map<Walk>(addWalkRequestDto);
+
+        //    //await walkRepository.CreateAsync(walkDomainModel);
+
+        //    //// Map Domain model to DTO
+        //    //return Ok(mapper.Map<WalkDto>(walkDomainModel));
+        //    //}
+
+
+        //    // Map DTO to Domain Model
+        //    var walkDomainModel = mapper.Map<Walk>(addWalkRequestDto);
+
+        //    await walkRepository.CreateAsync(walkDomainModel);
+
+        //    return Ok(mapper.Map<WalkDto>(walkDomainModel));
+
+
+        //}
+
+        // CREATE Walk
         // POST: /api/walks
         [HttpPost]
-        public async Task<IActionResult> Create(WalksRequestAddRequestEntity walksRequestAddRequestEntity)
+        [ValidateModel]
+        public async Task<IActionResult> Create([FromBody] AddWalkRequestDto addWalkRequestDto)
         {
-            // request entity logger
-            // call manager
-           // var res = await _walksManager.AddWalks(walksRequestAddRequestEntity);
-            // logginh
-            //return Ok(res);
-            //if (ModelState.IsValid)
-            //{
-            // Map DTO to Domain Model
-            //var walkDomainModel = mapper.Map<Walk>(addWalkRequestDto);
-
-            //await walkRepository.CreateAsync(walkDomainModel);
-
-            //// Map Domain model to DTO
-            //return Ok(mapper.Map<WalkDto>(walkDomainModel));
-            //}
-
-
             // Map DTO to Domain Model
             var walkDomainModel = mapper.Map<Walk>(addWalkRequestDto);
 
             await walkRepository.CreateAsync(walkDomainModel);
 
-            return Ok(mapper.Map<WalkDto>(walkDomainModel));
-
             // Map Domain model to DTO
-
+            return Ok(mapper.Map<WalkDto>(walkDomainModel));
         }
 
 
